@@ -187,6 +187,19 @@
   .clock .label{ font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--cream-dim); margin-top:4px; display:block; }
   .arrived{ display:none; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:26px; color:var(--gold-soft); }
 
+  /* ---------- lock gate ---------- */
+  #lock-msg{ text-align:center; padding-top:20px; padding-bottom:20px; }
+  #lock-msg.hidden{ display:none; }
+  .lock-box{
+    background:linear-gradient(160deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line); border-radius:16px; padding:34px 24px; max-width:420px; margin:0 auto;
+  }
+  .lock-icon{ font-size:26px; margin-bottom:14px; opacity:0.85; }
+  .lock-text{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:19px; color:var(--cream); margin:0 0 8px; }
+  .lock-sub{ font-size:13px; color:var(--cream-dim); margin:0; }
+  #locked-content{ display:none; }
+  #locked-content.unlocked{ display:block; }
+
   /* ---------- gallery ---------- */
   #gallery{ max-width:100%; padding-left:0; padding-right:0; }
   #gallery .head{ max-width:640px; margin:0 auto; padding:0 22px; text-align:center; }
@@ -289,6 +302,101 @@
   .letter-paper .sign{ font-family:'Mrs Saint Delafield', cursive; font-size:30px; margin-top:20px; color:var(--rose-deep); }
   .letter-paper .drop{ font-size:52px; float:left; line-height:0.8; margin:6px 8px 0 0; }
 
+  /* ---------- cake ---------- */
+  #cake{ text-align:center; }
+  .cake-title{ font-size:clamp(28px,6vw,38px); font-style:italic; margin:0 0 8px; }
+  #cake-hint{ color:var(--cream-dim); font-size:14px; margin-bottom:10px; transition:opacity 0.4s ease; }
+  .cake-stage{
+    position:relative; height:280px; display:flex; align-items:flex-end; justify-content:center;
+    margin:30px 0 18px;
+  }
+  .cake-glow{
+    position:absolute; top:10px; left:50%; width:140px; height:140px; transform:translateX(-50%);
+    background:radial-gradient(circle, rgba(255,196,120,0.35), transparent 70%);
+    opacity:0; transition:opacity 0.6s ease; pointer-events:none; filter:blur(4px);
+  }
+  .cake-glow.lit{ opacity:1; }
+
+  .cake{ position:relative; width:220px; cursor:pointer; user-select:none; }
+  .cake-plate{
+    width:230px; height:14px; margin:0 -5px; border-radius:50%;
+    background:linear-gradient(180deg, #3a2440, #241530);
+    box-shadow:0 14px 24px -8px rgba(0,0,0,0.6);
+  }
+  .cake-layer{
+    width:190px; margin:0 auto; border-radius:6px 6px 4px 4px;
+    background:linear-gradient(180deg, #f3d9c6, #e3b79a);
+    box-shadow:inset 0 -8px 14px rgba(150,90,60,0.25), 0 8px 16px -6px rgba(0,0,0,0.4);
+    position:relative;
+  }
+  .layer-1{ height:70px; }
+  .layer-2{ width:150px; height:56px; background:linear-gradient(180deg, #f8e4d2, #ecc6ab); margin-top:-6px; }
+  .cake-drip{
+    width:190px; height:20px; margin:0 auto; position:relative; top:6px;
+    background:
+      radial-gradient(circle at 10% 0, var(--rose) 0 7px, transparent 8px) 0 0/22px 14px repeat-x,
+      linear-gradient(180deg, var(--rose), var(--rose-deep));
+    border-radius:0 0 4px 4px;
+    opacity:0.9;
+  }
+  .cake-top{
+    width:150px; height:18px; margin:-2px auto 0; border-radius:50%;
+    background:linear-gradient(180deg, #fff7ec, #f8e4d2);
+    box-shadow:0 3px 6px rgba(0,0,0,0.15);
+  }
+
+  .candle{
+    position:absolute; left:50%; bottom:186px; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; z-index:3;
+  }
+  .candle-stick{
+    width:16px; height:52px; border-radius:3px;
+    background:repeating-linear-gradient(180deg, var(--gold-soft) 0 6px, var(--gold) 6px 12px);
+    display:flex; align-items:flex-end; justify-content:center; padding-bottom:4px;
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:9px; color:#4a2f1a;
+    box-shadow:0 4px 8px rgba(0,0,0,0.25);
+  }
+  .wick{ width:2px; height:8px; background:#3a2a1c; margin-bottom:-2px; }
+  .flame{
+    width:14px; height:22px; margin-bottom:-4px; position:relative;
+    opacity:0; transform:scale(0.4) translateY(6px);
+    transition:opacity 0.5s ease, transform 0.5s ease;
+  }
+  .flame.lit{ opacity:1; transform:scale(1) translateY(0); animation:flicker 1.6s ease-in-out infinite; }
+  .flame-inner{
+    width:100%; height:100%; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+    background:radial-gradient(circle at 50% 70%, #fff3c4, #ffb238 55%, #ff7a3d 85%);
+    box-shadow:0 0 16px 4px rgba(255,150,60,0.55);
+    transform:rotate(180deg);
+  }
+  @keyframes flicker{
+    0%,100%{ transform:scale(1) rotate(-3deg) translateY(0); }
+    25%{ transform:scale(1.05,0.95) rotate(2deg) translateY(-1px); }
+    50%{ transform:scale(0.96,1.04) rotate(-2deg) translateY(0); }
+    75%{ transform:scale(1.03,0.97) rotate(3deg) translateY(-1px); }
+  }
+  .smoke{
+    position:absolute; left:50%; bottom:238px; transform:translateX(-50%);
+    width:6px; height:6px; border-radius:50%;
+    background:rgba(220,210,200,0.55); filter:blur(2px); opacity:0; z-index:3;
+  }
+  .smoke.puff{ animation:smokeRise 1.4s ease-out forwards; }
+  @keyframes smokeRise{
+    0%{ opacity:0.7; transform:translate(-50%,0) scale(1); }
+    100%{ opacity:0; transform:translate(-50%,-46px) scale(4.5); }
+  }
+  .cake-msg{
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:18px; color:var(--gold-soft);
+    max-width:360px; margin:0 auto; opacity:0; transform:translateY(10px);
+    transition:opacity 0.8s ease, transform 0.8s ease;
+  }
+  .cake-msg.show{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    .flame.lit{ animation:none; }
+    .smoke.puff{ animation:none; opacity:0; }
+  }
+
   /* ---------- finale ---------- */
   #finale{ text-align:center; padding-bottom:140px; }
   #finale h2{
@@ -302,6 +410,79 @@
     color:var(--cream); border:none; padding:14px 30px; border-radius:30px;
     font-family:'Jost',sans-serif; letter-spacing:0.15em; text-transform:uppercase; font-size:12px;
     cursor:pointer; box-shadow:0 16px 30px -12px rgba(143,58,79,0.6);
+  }
+
+  /* ---------- surprise heart overlay ---------- */
+  #surprise-overlay{
+    position:fixed; inset:0; z-index:250;
+    background:radial-gradient(ellipse 90% 70% at 50% 40%, rgba(60,20,35,0.55), rgba(8,5,10,0.95));
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity 0.5s ease, visibility 0.5s ease;
+    overflow:hidden;
+  }
+  #surprise-overlay.show{ opacity:1; visibility:visible; pointer-events:auto; }
+
+  .confetti-layer{ position:absolute; inset:0; pointer-events:none; }
+  .confetti-piece{
+    position:absolute; top:-6vh; opacity:0.95; border-radius:1px;
+    animation-name:confettiFall; animation-timing-function:cubic-bezier(.4,0,.2,1); animation-fill-mode:forwards;
+  }
+  @keyframes confettiFall{
+    0%{ transform:translate(0,0) rotate(0deg); opacity:1; }
+    85%{ opacity:0.9; }
+    100%{ transform:translate(var(--driftX,0px), 112vh) rotate(var(--spin,720deg)); opacity:0.4; }
+  }
+
+  .surprise-heart-wrap{
+    position:relative; width:min(72vw,260px); height:min(66vw,240px);
+    display:flex; align-items:center; justify-content:center;
+    transform:scale(0); z-index:2;
+  }
+  .surprise-heart-wrap.pop{ animation:heartPop 0.9s cubic-bezier(.34,1.56,.64,1) forwards; }
+  @keyframes heartPop{
+    0%{ transform:scale(0) rotate(-10deg); }
+    55%{ transform:scale(1.18) rotate(4deg); }
+    75%{ transform:scale(0.94) rotate(-2deg); }
+    100%{ transform:scale(1) rotate(0deg); }
+  }
+  .heart-shape{
+    position:absolute; inset:0; margin:auto; width:78%; height:78%;
+  }
+  .heart-shape::before, .heart-shape::after{
+    content:""; position:absolute; top:0; width:52%; height:82%;
+    background:linear-gradient(155deg, var(--rose), var(--rose-deep) 75%);
+    border-radius:100px 100px 0 0;
+    box-shadow:0 0 70px 14px rgba(192,90,114,0.55);
+    animation:heartGlow 2.4s ease-in-out infinite;
+  }
+  .heart-shape::before{ left:50%; transform:rotate(-45deg); transform-origin:0 100%; }
+  .heart-shape::after{ left:0; transform:rotate(45deg); transform-origin:100% 100%; }
+  @keyframes heartGlow{
+    0%,100%{ box-shadow:0 0 70px 14px rgba(192,90,114,0.5); }
+    50%{ box-shadow:0 0 90px 22px rgba(192,90,114,0.75); }
+  }
+  .surprise-text{
+    position:relative; z-index:3; text-align:center; padding:0 14px;
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:600;
+    font-size:clamp(15px, 4.6vw, 21px); line-height:1.25; color:var(--cream);
+    text-shadow:0 2px 10px rgba(0,0,0,0.45);
+    opacity:0; transform:translateY(6px);
+    transition:opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s;
+  }
+  .surprise-heart-wrap.pop .surprise-text{ opacity:1; transform:translateY(0); }
+  .surprise-text .baby{ display:block; font-size:1.35em; letter-spacing:0.04em; color:var(--gold-soft); margin-top:2px; }
+
+  .surprise-hint{
+    margin-top:26px; font-size:11px; letter-spacing:0.25em; text-transform:uppercase;
+    color:var(--cream-dim); opacity:0; transition:opacity 0.8s ease 1s;
+  }
+  #surprise-overlay.show .surprise-hint{ opacity:0.6; }
+
+  @media (prefers-reduced-motion: reduce){
+    .heart-shape::before, .heart-shape::after{ animation:none; }
+    .surprise-heart-wrap.pop{ animation:none; transform:scale(1); }
+    .confetti-piece{ animation:none; opacity:0; }
   }
   .foot-note{ margin-top:60px; font-size:12px; color:rgba(203,191,174,0.5); }
 
@@ -355,6 +536,16 @@
     <div class="arrived" id="cd-arrived">It's your day, baby. Happy Birthday. 🤍</div>
   </section>
 
+  <section id="lock-msg" class="reveal">
+    <div class="lock-box">
+      <div class="lock-icon">🔒</div>
+      <p class="lock-text">the rest of your gift is wrapped up until your birthday.</p>
+      <p class="lock-sub">come back on September 22nd, baby — I promise it'll be worth the wait.</p>
+    </div>
+  </section>
+
+  <div id="locked-content">
+
   <section id="gallery">
     <div class="head reveal">
       <span class="eyebrow">Little moments</span>
@@ -394,6 +585,31 @@
     </div>
   </section>
 
+  <section id="cake" class="reveal">
+    <span class="eyebrow">One more thing</span>
+    <h2 class="cake-title">Make a wish, baby</h2>
+    <p class="note" id="cake-hint">tap the cake to light your candle</p>
+    <div class="cake-stage">
+      <div class="cake-glow" id="cake-glow"></div>
+      <div class="cake" id="cake">
+        <div class="candle">
+          <div class="flame" id="flame">
+            <div class="flame-inner"></div>
+          </div>
+          <div class="wick"></div>
+          <div class="candle-stick">22</div>
+        </div>
+        <div class="smoke" id="smoke"></div>
+        <div class="cake-top"></div>
+        <div class="cake-drip"></div>
+        <div class="cake-layer layer-2"></div>
+        <div class="cake-layer layer-1"></div>
+        <div class="cake-plate"></div>
+      </div>
+    </div>
+    <p class="cake-msg" id="cake-msg">Happy 22nd birthday, baby. I hope this year loves you as much as I do.</p>
+  </section>
+
   <section id="finale" class="reveal">
     <h2>I love you, baby.</h2>
     <p>happy birthday — this is only the beginning of your day.</p>
@@ -401,7 +617,18 @@
     <div class="foot-note">made with love, just for you — Sept 22, 2026</div>
   </section>
 
+  </div><!-- /locked-content -->
+
 </main>
+
+<div id="surprise-overlay">
+  <div class="confetti-layer" id="confetti-layer"></div>
+  <div class="surprise-heart-wrap" id="surprise-heart-wrap">
+    <div class="heart-shape"></div>
+    <div class="surprise-text">I LOVE YOU<br>SO MUCH<br><span class="baby">BABY</span></div>
+  </div>
+  <div class="surprise-hint">tap anywhere to close</div>
+</div>
 
 <div id="lightbox">
   <button class="lb-close" id="lb-close" aria-label="Close">&times;</button>
@@ -511,6 +738,44 @@ lb.addEventListener('click', (e) => { if(e.target === lb) lb.classList.remove('s
 document.getElementById('lb-prev').addEventListener('click', () => { lbIndex = (lbIndex - 1 + allPhotos.length) % allPhotos.length; updateLightbox(); });
 document.getElementById('lb-next').addEventListener('click', () => { lbIndex = (lbIndex + 1) % allPhotos.length; updateLightbox(); });
 
+/* ---------------- scroll reveal ---------------- */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('in');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+revealEls.forEach(el => io.observe(el));
+
+/* ---------------- lock gate ---------------- */
+// {{LOCK_FLAG}} is replaced at build time: true = gated version (for her), false = full-access version (for you)
+const LOCK_UNTIL_BIRTHDAY = true;
+const lockMsgEl = document.getElementById('lock-msg');
+const lockedContentEl = document.getElementById('locked-content');
+let unlocked = false;
+
+function unlockContent(){
+  if(unlocked) return;
+  unlocked = true;
+  lockedContentEl.classList.add('unlocked');
+  lockMsgEl.classList.add('hidden');
+  // re-trigger reveal animations for anything now visible
+  document.querySelectorAll('#locked-content .reveal').forEach(el => io.observe(el));
+}
+
+function applyLockState(){
+  const isPast = new Date() >= target;
+  if(!LOCK_UNTIL_BIRTHDAY || isPast){
+    unlockContent();
+  } else {
+    lockedContentEl.classList.remove('unlocked');
+    lockMsgEl.classList.remove('hidden');
+  }
+}
+
 /* ---------------- countdown ---------------- */
 const target = new Date('2026-09-22T00:00:00');
 function tickCountdown(){
@@ -519,6 +784,7 @@ function tickCountdown(){
   if(diff <= 0){
     document.querySelector('.clock').style.display = 'none';
     document.getElementById('cd-arrived').style.display = 'block';
+    unlockContent();
     clearInterval(cdInterval);
     return;
   }
@@ -531,6 +797,7 @@ function tickCountdown(){
   document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
   document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
 }
+applyLockState();
 tickCountdown();
 const cdInterval = setInterval(tickCountdown, 1000);
 
@@ -600,22 +867,85 @@ if(!reduceMotion){
   setInterval(() => spawnPetal(), 900);
 }
 
-/* ---------------- scroll reveal ---------------- */
-const revealEls = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      entry.target.classList.add('in');
-      io.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.15 });
-revealEls.forEach(el => io.observe(el));
+/* ---------------- finale surprise: heart pop + confetti ---------------- */
+const surpriseOverlay = document.getElementById('surprise-overlay');
+const surpriseHeartWrap = document.getElementById('surprise-heart-wrap');
+const confettiLayer = document.getElementById('confetti-layer');
+const confettiColors = ['#c05a72', '#cfa66a', '#eec3cd', '#f6ecd9', '#8f3a4f'];
 
-/* ---------------- finale burst button ---------------- */
-document.getElementById('burst-btn').addEventListener('click', (e) => {
-  const rect = e.target.getBoundingClientRect();
-  burstPetalsAt(rect.left + rect.width/2, rect.top, 30);
+function spawnConfetti(count){
+  for(let i = 0; i < count; i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    const left = Math.random() * 100;
+    const w = 5 + Math.random() * 5;
+    const h = 10 + Math.random() * 8;
+    const dur = 2.4 + Math.random() * 2.2;
+    const delay = Math.random() * 0.5;
+    const driftX = (Math.random() * 200 - 100) + 'px';
+    const spin = (Math.random() > 0.5 ? 1 : -1) * (480 + Math.random() * 480) + 'deg';
+    piece.style.left = left + '%';
+    piece.style.width = w + 'px';
+    piece.style.height = h + 'px';
+    piece.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    piece.style.animationDuration = dur + 's';
+    piece.style.animationDelay = delay + 's';
+    piece.style.setProperty('--driftX', driftX);
+    piece.style.setProperty('--spin', spin);
+    confettiLayer.appendChild(piece);
+    setTimeout(() => piece.remove(), (dur + delay) * 1000 + 200);
+  }
+}
+
+function showSurprise(){
+  surpriseOverlay.classList.add('show');
+  // restart pop animation even on repeat taps
+  surpriseHeartWrap.classList.remove('pop');
+  void surpriseHeartWrap.offsetWidth;
+  surpriseHeartWrap.classList.add('pop');
+  spawnConfetti(reduceMotion ? 0 : 70);
+  if(!reduceMotion) burstPetalsAt(window.innerWidth/2, window.innerHeight*0.35, 14);
+}
+
+function hideSurprise(){
+  surpriseOverlay.classList.remove('show');
+  surpriseHeartWrap.classList.remove('pop');
+}
+
+document.getElementById('burst-btn').addEventListener('click', showSurprise);
+surpriseOverlay.addEventListener('click', hideSurprise);
+
+/* ---------------- cake & candle ---------------- */
+const cakeEl = document.getElementById('cake');
+const flameEl = document.getElementById('flame');
+const glowEl = document.getElementById('cake-glow');
+const smokeEl = document.getElementById('smoke');
+const cakeHint = document.getElementById('cake-hint');
+const cakeMsg = document.getElementById('cake-msg');
+let cakeState = 'unlit'; // unlit -> lit -> blown
+
+cakeEl.addEventListener('click', () => {
+  if(cakeState === 'unlit'){
+    cakeState = 'lit';
+    flameEl.classList.add('lit');
+    glowEl.classList.add('lit');
+    cakeHint.textContent = 'tap the flame to make your wish';
+  } else if(cakeState === 'lit'){
+    cakeState = 'blown';
+    flameEl.classList.remove('lit');
+    glowEl.classList.remove('lit');
+    smokeEl.classList.remove('puff'); void smokeEl.offsetWidth; smokeEl.classList.add('puff');
+    cakeHint.textContent = 'wish made 🤍';
+    cakeMsg.classList.add('show');
+    burstPetalsAt(window.innerWidth/2, window.innerHeight/2, 24);
+  } else if(cakeState === 'blown'){
+    // allow relighting for fun
+    cakeState = 'lit';
+    flameEl.classList.add('lit');
+    glowEl.classList.add('lit');
+    cakeHint.textContent = 'tap the flame to make your wish';
+    cakeMsg.classList.remove('show');
+  }
 });
 </script>
 </body>
