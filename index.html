@@ -21,6 +21,8 @@
     --gold:#cfa66a;
     --gold-soft:#e3c893;
     --line:rgba(207,166,106,0.25);
+    --leaf:#8a9b6e;
+    --leaf-deep:#5c6f45;
   }
 
   *{box-sizing:border-box;}
@@ -73,14 +75,58 @@
   }
   #envelope-screen.hide{ opacity:0; visibility:hidden; pointer-events:none; }
 
+  .env-ambient-glow{
+    position:absolute; top:50%; left:50%; width:min(90vw,420px); height:min(90vw,420px);
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle, rgba(207,166,106,0.22), rgba(207,166,106,0.06) 45%, transparent 72%);
+    filter:blur(6px); pointer-events:none; z-index:0;
+    animation:envGlowPulse 4.5s ease-in-out infinite;
+  }
+  @keyframes envGlowPulse{
+    0%,100%{ opacity:0.7; transform:translate(-50%,-50%) scale(0.94); }
+    50%{ opacity:1; transform:translate(-50%,-50%) scale(1.06); }
+  }
+
+  #env-sparkles{ position:absolute; inset:0; pointer-events:none; z-index:1; overflow:hidden; }
+  .env-sparkle{
+    position:absolute; color:var(--gold-soft); opacity:0;
+    animation-name:envSparkleFloat; animation-timing-function:ease-out; animation-fill-mode:forwards;
+    text-shadow:0 0 6px rgba(207,166,106,0.7);
+  }
+  @keyframes envSparkleFloat{
+    0%{ opacity:0; transform:translateY(6px) scale(0.6) rotate(0deg); }
+    18%{ opacity:0.95; }
+    75%{ opacity:0.8; }
+    100%{ opacity:0; transform:translateY(-70px) scale(1.15) rotate(50deg); }
+  }
+
+  /* ---------- site-wide ambient gold sparkles ---------- */
+  #ambient-sparkles{ position:fixed; inset:0; z-index:4; pointer-events:none; overflow:hidden; }
+  .spark{
+    position:absolute; width:3px; height:3px; border-radius:50%;
+    background:var(--gold-soft); opacity:0;
+    box-shadow:0 0 6px 1px rgba(227,200,147,0.8);
+    animation-name:sparkTwinkle; animation-timing-function:ease-in-out; animation-iteration-count:infinite;
+  }
+  @keyframes sparkTwinkle{
+    0%,100%{ opacity:0; transform:scale(0.6); }
+    50%{ opacity:0.85; transform:scale(1.3); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .spark{ animation:none; opacity:0.35; transform:scale(1); }
+    .env-ambient-glow{ animation:none; }
+    .env-sparkle{ display:none; }
+  }
+
   .env-kicker{
     letter-spacing:0.35em; text-transform:uppercase; font-size:11px;
     color:var(--gold-soft); margin-bottom:18px; opacity:0.85;
+    position:relative; z-index:2;
   }
 
   .envelope{
     position:relative; width:min(78vw, 300px); height:min(56vw, 210px);
-    cursor:pointer; perspective:1200px;
+    cursor:pointer; perspective:1200px; z-index:2;
   }
   .env-body{
     position:absolute; inset:0;
@@ -136,6 +182,7 @@
   .env-cta{
     margin-top:26px; font-size:12px; letter-spacing:0.25em; text-transform:uppercase;
     color:var(--cream-dim); animation:pulse 2.4s ease-in-out infinite;
+    position:relative; z-index:2;
   }
   @keyframes pulse{ 0%,100%{opacity:0.55;} 50%{opacity:1;} }
   .envelope.open ~ .env-cta{ opacity:0; }
@@ -317,22 +364,41 @@
   }
   .cake-glow.lit{ opacity:1; }
 
-  .cake{ position:relative; width:220px; cursor:pointer; user-select:none; }
+  .cake{ position:relative; width:220px; height:200px; cursor:pointer; user-select:none; }
   .cake-plate{
-    width:230px; height:14px; margin:0 -5px; border-radius:50%;
+    position:absolute; left:50%; bottom:0; transform:translateX(-50%); z-index:1;
+    width:230px; height:14px; border-radius:50%;
     background:linear-gradient(180deg, #3a2440, #241530);
     box-shadow:0 14px 24px -8px rgba(0,0,0,0.6);
   }
   .cake-layer{
-    width:190px; margin:0 auto; border-radius:6px 6px 4px 4px;
+    position:absolute; left:50%; transform:translateX(-50%);
+    width:190px; border-radius:6px 6px 4px 4px;
     background:linear-gradient(180deg, #f3d9c6, #e3b79a);
     box-shadow:inset 0 -8px 14px rgba(150,90,60,0.25), 0 8px 16px -6px rgba(0,0,0,0.4);
-    position:relative;
+    overflow:hidden;
   }
-  .layer-1{ height:70px; }
-  .layer-2{ width:150px; height:56px; background:linear-gradient(180deg, #f8e4d2, #ecc6ab); margin-top:-6px; }
+  .layer-1{ bottom:14px; height:70px; z-index:2; }
+  .layer-2{
+    bottom:78px; z-index:3; width:150px; height:56px;
+    background:linear-gradient(180deg, #f8e4d2, #ecc6ab);
+  }
+  .cake-dots{
+    position:absolute; top:0; left:0; right:0; height:7px;
+    background-image:radial-gradient(circle, var(--gold-soft) 2px, transparent 2.3px);
+    background-size:15px 7px; background-repeat:repeat-x; background-position:6px 0;
+    opacity:0.8; pointer-events:none;
+  }
+  .cake-word{
+    position:absolute; top:52%; left:50%; transform:translate(-50%,-50%);
+    font-family:'Mrs Saint Delafield', cursive; color:var(--rose-deep);
+    white-space:nowrap; pointer-events:none; text-shadow:0 1px 1px rgba(255,255,255,0.45);
+  }
+  .cake-word.top{ font-size:16px; }
+  .cake-word.bottom{ font-size:20px; }
   .cake-drip{
-    width:190px; height:20px; margin:0 auto; position:relative; top:6px;
+    position:absolute; left:50%; bottom:72px; transform:translateX(-50%); z-index:4;
+    width:172px; height:22px;
     background:
       radial-gradient(circle at 10% 0, var(--rose) 0 7px, transparent 8px) 0 0/22px 14px repeat-x,
       linear-gradient(180deg, var(--rose), var(--rose-deep));
@@ -340,14 +406,15 @@
     opacity:0.9;
   }
   .cake-top{
-    width:150px; height:18px; margin:-2px auto 0; border-radius:50%;
+    position:absolute; left:50%; bottom:132px; transform:translateX(-50%); z-index:5;
+    width:150px; height:18px; border-radius:50%;
     background:linear-gradient(180deg, #fff7ec, #f8e4d2);
     box-shadow:0 3px 6px rgba(0,0,0,0.15);
   }
 
   .candle{
-    position:absolute; left:50%; bottom:186px; transform:translateX(-50%);
-    display:flex; flex-direction:column; align-items:center; z-index:3;
+    position:absolute; left:50%; bottom:144px; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; z-index:6;
   }
   .candle-stick{
     width:16px; height:52px; border-radius:3px;
@@ -376,9 +443,9 @@
     75%{ transform:scale(1.03,0.97) rotate(3deg) translateY(-1px); }
   }
   .smoke{
-    position:absolute; left:50%; bottom:238px; transform:translateX(-50%);
+    position:absolute; left:50%; bottom:224px; transform:translateX(-50%);
     width:6px; height:6px; border-radius:50%;
-    background:rgba(220,210,200,0.55); filter:blur(2px); opacity:0; z-index:3;
+    background:rgba(220,210,200,0.55); filter:blur(2px); opacity:0; z-index:6;
   }
   .smoke.puff{ animation:smokeRise 1.4s ease-out forwards; }
   @keyframes smokeRise{
@@ -395,6 +462,80 @@
   @media (prefers-reduced-motion: reduce){
     .flame.lit{ animation:none; }
     .smoke.puff{ animation:none; opacity:0; }
+  }
+
+  /* ---------- tulip bouquet ---------- */
+  #bouquet{ text-align:center; }
+  #bouquet h2{ font-size:clamp(28px,6vw,38px); font-style:italic; margin:0 0 8px; }
+  #bouquet .note{ color:var(--cream-dim); font-size:14px; margin-bottom:10px; }
+
+  .bouquet-stage{
+    position:relative; height:210px; display:flex; align-items:flex-end; justify-content:center;
+    gap:2px; margin:36px auto 0; padding-bottom:38px; max-width:340px;
+  }
+  .bouquet-wrap{
+    position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    width:170px; height:76px; z-index:0;
+    background:linear-gradient(160deg, #f3e6c8, #d9c39a);
+    clip-path:polygon(24% 0, 76% 0, 100% 100%, 0% 100%);
+    box-shadow:0 16px 28px -14px rgba(0,0,0,0.45);
+  }
+  .bouquet-ribbon{
+    position:absolute; bottom:26px; left:50%; transform:translateX(-50%);
+    width:170px; height:9px; background:var(--rose-deep); opacity:0.9; z-index:1;
+  }
+
+  .tulip{
+    position:relative; z-index:2; display:flex; flex-direction:column; align-items:center;
+    background:none; border:none; padding:0 6px; cursor:pointer; -webkit-tap-highlight-color:transparent;
+  }
+  .tulip-bloom{
+    position:relative; width:34px; height:30px; transition:transform 0.35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .tulip.tapped .tulip-bloom{ animation:tulipTap 0.5s ease; }
+  @keyframes tulipTap{
+    0%{ transform:scale(1) rotate(0deg); }
+    35%{ transform:scale(1.18) rotate(-6deg); }
+    65%{ transform:scale(0.95) rotate(4deg); }
+    100%{ transform:scale(1) rotate(0deg); }
+  }
+  .tulip-petal{
+    position:absolute; bottom:0; top:auto; width:16px; height:26px; border-radius:50% 50% 4px 4px;
+    background:var(--tulip-color, var(--rose));
+    box-shadow:inset 0 -5px 7px rgba(0,0,0,0.18), 0 4px 8px -4px rgba(0,0,0,0.3);
+    animation:none; font-size:inherit; opacity:1; filter:none; will-change:auto;
+  }
+  .tulip-petal.center{ left:9px; z-index:3; }
+  .tulip-petal.pleft{ left:0px; transform:rotate(-26deg); transform-origin:bottom center; z-index:2; opacity:0.9; }
+  .tulip-petal.pright{ left:18px; transform:rotate(26deg); transform-origin:bottom center; z-index:2; opacity:0.9; }
+  .tulip-stem{
+    width:3px; background:linear-gradient(180deg, var(--leaf), var(--leaf-deep)); border-radius:2px;
+    position:relative;
+  }
+  .tulip-leaf{
+    position:absolute; width:20px; height:7px; background:var(--leaf); border-radius:0 100% 0 100%; opacity:0.9;
+  }
+  .tulip-leaf.ll{ left:-16px; top:40%; transform:rotate(-14deg); }
+  .tulip-leaf.lr{ right:-16px; top:58%; transform:rotate(14deg) scaleX(-1); }
+
+  .tulip-tag{
+    position:absolute; bottom:100%; left:50%; margin-bottom:8px;
+    transform:translate(-50%,6px) scale(0.85);
+    background:linear-gradient(160deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line); border-radius:10px; padding:6px 13px; white-space:nowrap;
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:13px; color:var(--gold-soft);
+    opacity:0; pointer-events:none; z-index:5;
+    transition:opacity 0.35s ease, transform 0.35s ease;
+    box-shadow:0 10px 22px -10px rgba(0,0,0,0.55);
+  }
+  .tulip-tag::after{
+    content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+    border:5px solid transparent; border-top-color:var(--panel-2);
+  }
+  .tulip-tag.show{ opacity:1; transform:translate(-50%,0) scale(1); pointer-events:auto; }
+
+  @media (prefers-reduced-motion: reduce){
+    .tulip.tapped .tulip-bloom{ animation:none; }
   }
 
   /* ---------- finale ---------- */
@@ -499,9 +640,12 @@
 <body class="locked">
 
 <div id="petals" aria-hidden="true"></div>
+<div id="ambient-sparkles" aria-hidden="true"></div>
 
 <!-- ENVELOPE HERO -->
 <div id="envelope-screen">
+  <div class="env-ambient-glow"></div>
+  <div id="env-sparkles"></div>
   <span class="env-kicker">A little something for</span>
   <div class="envelope" id="envelope">
     <div class="env-letter"><span>happy birthday,<br>baby</span></div>
@@ -518,14 +662,14 @@
 
   <section id="hero">
     <div class="to reveal">for my baby</div>
-    <h1 class="reveal">Happy<br>Birthday</h1>
-    <p class="sub reveal">September 22nd is your day — and I just wanted you to have something made only for you. Scroll down, love. There's more.</p>
+    <h1 class="reveal parallax" data-speed="0.07">Happy<br>Birthday</h1>
+    <p class="sub reveal parallax" data-speed="0.04">September 22nd is your day — and I just wanted you to have something made only for you. Scroll down, love. There's more.</p>
     <div class="heart-divider"></div>
   </section>
 
   <section id="countdown" class="reveal">
     <span class="eyebrow">Counting down</span>
-    <h2>Until it's officially your day</h2>
+    <h2 class="parallax" data-speed="0.05">Until it's officially your day</h2>
     <p class="note">2 0 2 6</p>
     <div class="clock">
       <div class="cell"><span class="num" id="cd-days">00</span><span class="label">days</span></div>
@@ -549,7 +693,7 @@
   <section id="gallery">
     <div class="head reveal">
       <span class="eyebrow">Little moments</span>
-      <h2>Pieces of you I keep</h2>
+      <h2 class="parallax" data-speed="0.05">Pieces of you I keep</h2>
       <p class="note">tap a photo to see it up close</p>
     </div>
     <div class="filmstrip" id="filmstrip">
@@ -560,7 +704,7 @@
   <section id="us-gallery">
     <div class="head reveal">
       <span class="eyebrow">You and me</span>
-      <h2>Us, together</h2>
+      <h2 class="parallax" data-speed="0.05">Us, together</h2>
       <p class="note">my favorite kind of photos</p>
     </div>
     <div class="filmstrip" id="filmstrip-us">
@@ -570,14 +714,25 @@
 
   <section id="reasons" class="reveal">
     <span class="eyebrow">Just a few</span>
-    <h2>Reasons, among many</h2>
+    <h2 class="parallax" data-speed="0.05">Reasons, among many</h2>
     <p class="note">tap each one</p>
     <div class="cards" id="cards"></div>
   </section>
 
+  <section id="bouquet" class="reveal">
+    <span class="eyebrow">A little bouquet</span>
+    <h2 class="parallax" data-speed="0.05">Flowers, just for you</h2>
+    <p class="note">tap each one, left to right</p>
+    <div class="bouquet-stage" id="bouquet-stage">
+      <div class="bouquet-wrap"></div>
+      <div class="bouquet-ribbon"></div>
+      <!-- tulips injected by JS -->
+    </div>
+  </section>
+
   <section id="letter" class="reveal">
     <span class="eyebrow">A letter for you</span>
-    <div class="letter-paper">
+    <div class="letter-paper parallax" data-speed="0.025">
       <p><span class="drop">M</span>y baby, my favorite person — happy birthday. I hope today feels as good as you make every ordinary day feel for me. You have this way of turning a normal Tuesday into something worth remembering, and I don't think you even notice you're doing it.</p>
       <p>I know a website won't say it perfectly, but I wanted to make you something with my own hands and time — because you deserve more than just words typed in a message. You deserve to be celebrated, slowly, on purpose, the way you deserve to be loved every day.</p>
       <p>So today, let yourself be celebrated. Let yourself be a little extra. I'll be right here, loving you at every age you become.</p>
@@ -587,8 +742,8 @@
 
   <section id="cake" class="reveal">
     <span class="eyebrow">One more thing</span>
-    <h2 class="cake-title">Make a wish, baby</h2>
-    <p class="note" id="cake-hint">tap the cake to light your candle</p>
+    <h2 class="cake-title parallax" data-speed="0.05">Make a wish, baby</h2>
+    <p class="note" id="cake-hint">your candle's waiting...</p>
     <div class="cake-stage">
       <div class="cake-glow" id="cake-glow"></div>
       <div class="cake" id="cake">
@@ -602,8 +757,14 @@
         <div class="smoke" id="smoke"></div>
         <div class="cake-top"></div>
         <div class="cake-drip"></div>
-        <div class="cake-layer layer-2"></div>
-        <div class="cake-layer layer-1"></div>
+        <div class="cake-layer layer-2">
+          <div class="cake-dots"></div>
+          <span class="cake-word top">Happy</span>
+        </div>
+        <div class="cake-layer layer-1">
+          <div class="cake-dots"></div>
+          <span class="cake-word bottom">Birthday</span>
+        </div>
         <div class="cake-plate"></div>
       </div>
     </div>
@@ -611,7 +772,7 @@
   </section>
 
   <section id="finale" class="reveal">
-    <h2>I love you, baby.</h2>
+    <h2 class="parallax" data-speed="0.06">I love you, baby.</h2>
     <p>happy birthday — this is only the beginning of your day.</p>
     <button id="burst-btn">tap for one more surprise</button>
     <div class="foot-note">made with love, just for you — Sept 22, 2026</div>
@@ -719,6 +880,41 @@ reasons.forEach((r, i) => {
   cardsWrap.appendChild(c);
 });
 
+/* ---------------- build tulip bouquet ---------------- */
+const bouquetStage = document.getElementById('bouquet-stage');
+const tulipData = [
+  { color: 'var(--rose)',      height: 96,  rot: -7, msg: 'I' },
+  { color: 'var(--gold)',      height: 116, rot: -3, msg: 'WILL' },
+  { color: 'var(--blush)',     height: 128, rot: 0,  msg: 'LOVE' },
+  { color: 'var(--rose-deep)', height: 114, rot: 3,  msg: 'YOU' },
+  { color: 'var(--gold-soft)', height: 94,  rot: 7,  msg: 'FOREVER' },
+];
+
+tulipData.forEach((t) => {
+  const btn = document.createElement('button');
+  btn.className = 'tulip';
+  btn.style.transform = `rotate(${t.rot}deg)`;
+  btn.setAttribute('aria-label', 'tulip');
+  btn.innerHTML = `
+    <div class="tulip-tag">${t.msg}</div>
+    <div class="tulip-bloom" style="--tulip-color:${t.color}">
+      <div class="tulip-petal pleft"></div>
+      <div class="tulip-petal pright"></div>
+      <div class="tulip-petal center"></div>
+    </div>
+    <div class="tulip-stem" style="height:${t.height}px">
+      <div class="tulip-leaf ll"></div>
+      <div class="tulip-leaf lr"></div>
+    </div>
+  `;
+  const tag = btn.querySelector('.tulip-tag');
+  btn.addEventListener('click', () => {
+    btn.classList.remove('tapped'); void btn.offsetWidth; btn.classList.add('tapped');
+    tag.classList.toggle('show');
+  });
+  bouquetStage.appendChild(btn);
+});
+
 /* ---------------- lightbox ---------------- */
 const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lb-img');
@@ -810,6 +1006,7 @@ envelope.addEventListener('click', () => {
   envelope.classList.add('open');
   burstPetalsAt(window.innerWidth/2, window.innerHeight/2, 18);
   playMusic();
+  clearInterval(envSparkleInterval);
   setTimeout(() => {
     envScreen.classList.add('hide');
     body.classList.remove('locked');
@@ -865,6 +1062,72 @@ function burstPetalsAt(x, y, count){
 
 if(!reduceMotion){
   setInterval(() => spawnPetal(), 900);
+}
+
+/* ---------------- envelope pre-tap sparkles ---------------- */
+const envSparkleWrap = document.getElementById('env-sparkles');
+const sparkleChars = ['✦','✧','✩'];
+
+function spawnEnvSparkle(){
+  const s = document.createElement('span');
+  s.className = 'env-sparkle';
+  s.textContent = sparkleChars[Math.floor(Math.random()*sparkleChars.length)];
+  const envRect = envelope.getBoundingClientRect();
+  const spread = Math.max(envRect.width, 220);
+  const left = window.innerWidth/2 + (Math.random()*spread - spread/2);
+  const top = window.innerHeight/2 + (Math.random()*160 - 80);
+  s.style.left = left + 'px';
+  s.style.top = top + 'px';
+  s.style.fontSize = (8 + Math.random()*9) + 'px';
+  const dur = 2.6 + Math.random()*1.8;
+  s.style.animationDuration = dur + 's';
+  envSparkleWrap.appendChild(s);
+  setTimeout(() => s.remove(), dur * 1000 + 150);
+}
+
+let envSparkleInterval;
+if(!reduceMotion){
+  for(let i=0;i<5;i++) setTimeout(spawnEnvSparkle, i*260);
+  envSparkleInterval = setInterval(spawnEnvSparkle, 420);
+}
+
+/* ---------------- site-wide ambient gold sparkles ---------------- */
+const ambientSparkleWrap = document.getElementById('ambient-sparkles');
+const AMBIENT_SPARKLE_COUNT = 20;
+for(let i=0;i<AMBIENT_SPARKLE_COUNT;i++){
+  const sp = document.createElement('div');
+  sp.className = 'spark';
+  sp.style.left = (Math.random()*100) + 'vw';
+  sp.style.top = (Math.random()*100) + 'vh';
+  sp.style.animationDuration = (2.6 + Math.random()*3.2) + 's';
+  sp.style.animationDelay = (Math.random()*4) + 's';
+  ambientSparkleWrap.appendChild(sp);
+}
+
+/* ---------------- parallax on scroll ---------------- */
+const parallaxEls = Array.from(document.querySelectorAll('.parallax'));
+let parallaxTicking = false;
+function updateParallax(){
+  const vh = window.innerHeight;
+  parallaxEls.forEach(el => {
+    const speed = parseFloat(el.dataset.speed || '0.04');
+    const rect = el.getBoundingClientRect();
+    const centerOffset = (rect.top + rect.height/2) - vh/2;
+    const translate = Math.max(-26, Math.min(26, -centerOffset * speed));
+    el.style.transform = `translateY(${translate}px)`;
+  });
+  parallaxTicking = false;
+}
+function onParallaxScroll(){
+  if(!parallaxTicking){
+    requestAnimationFrame(updateParallax);
+    parallaxTicking = true;
+  }
+}
+if(!reduceMotion && parallaxEls.length){
+  window.addEventListener('scroll', onParallaxScroll, { passive:true });
+  window.addEventListener('resize', onParallaxScroll);
+  updateParallax();
 }
 
 /* ---------------- finale surprise: heart pop + confetti ---------------- */
@@ -924,27 +1187,51 @@ const cakeHint = document.getElementById('cake-hint');
 const cakeMsg = document.getElementById('cake-msg');
 let cakeState = 'unlit'; // unlit -> lit -> blown
 
+function lightCandle(){
+  if(cakeState !== 'unlit') return;
+  cakeState = 'lit';
+  flameEl.classList.add('lit');
+  glowEl.classList.add('lit');
+  cakeHint.textContent = 'tap the flame to make your wish';
+}
+
+function blowCandle(){
+  cakeState = 'blown';
+  flameEl.classList.remove('lit');
+  glowEl.classList.remove('lit');
+  smokeEl.classList.remove('puff'); void smokeEl.offsetWidth; smokeEl.classList.add('puff');
+  cakeHint.textContent = 'wish made 🤍';
+  cakeMsg.classList.add('show');
+  burstPetalsAt(window.innerWidth/2, window.innerHeight/2, 24);
+}
+
+function relightCandle(){
+  cakeState = 'lit';
+  flameEl.classList.add('lit');
+  glowEl.classList.add('lit');
+  cakeHint.textContent = 'tap the flame to make your wish';
+  cakeMsg.classList.remove('show');
+}
+
+// candle lights itself the moment the cake scrolls into view
+const cakeSection = document.getElementById('cake');
+const cakeIO = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      setTimeout(lightCandle, 350);
+      cakeIO.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.45 });
+cakeIO.observe(cakeSection);
+
 cakeEl.addEventListener('click', () => {
   if(cakeState === 'unlit'){
-    cakeState = 'lit';
-    flameEl.classList.add('lit');
-    glowEl.classList.add('lit');
-    cakeHint.textContent = 'tap the flame to make your wish';
+    lightCandle();
   } else if(cakeState === 'lit'){
-    cakeState = 'blown';
-    flameEl.classList.remove('lit');
-    glowEl.classList.remove('lit');
-    smokeEl.classList.remove('puff'); void smokeEl.offsetWidth; smokeEl.classList.add('puff');
-    cakeHint.textContent = 'wish made 🤍';
-    cakeMsg.classList.add('show');
-    burstPetalsAt(window.innerWidth/2, window.innerHeight/2, 24);
+    blowCandle();
   } else if(cakeState === 'blown'){
-    // allow relighting for fun
-    cakeState = 'lit';
-    flameEl.classList.add('lit');
-    glowEl.classList.add('lit');
-    cakeHint.textContent = 'tap the flame to make your wish';
-    cakeMsg.classList.remove('show');
+    relightCandle();
   }
 });
 </script>
