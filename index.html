@@ -948,7 +948,7 @@ revealEls.forEach(el => io.observe(el));
 
 /* ---------------- lock gate ---------------- */
 // {{LOCK_FLAG}} is replaced at build time: true = gated version (for her), false = full-access version (for you)
-const LOCK_UNTIL_BIRTHDAY = true;
+const LOCK_UNTIL_BIRTHDAY = false;
 const lockMsgEl = document.getElementById('lock-msg');
 const lockedContentEl = document.getElementById('locked-content');
 let unlocked = false;
